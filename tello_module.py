@@ -120,7 +120,6 @@ class Tello:
         global client_socket
 
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         client_socket.bind(('', Tello.CONTROL_UDP_PORT))
 
         while True:
@@ -142,7 +141,6 @@ class Tello:
         the Tello. Must be run from a background thread in order to not block
         the main thread."""
         state_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        state_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         state_socket.bind(('', Tello.STATE_UDP_PORT))
 
         while True:
