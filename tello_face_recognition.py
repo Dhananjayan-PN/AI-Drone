@@ -22,8 +22,12 @@ try:
         frame = frame_read.frame
         face_cascade = cv2.CascadeClassifier("frontalface.xml")
         faces = face_cascade.detectMultiScale(frame)
-        for x, y, w, h in faces:
-            frame = cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
+        try:
+            for x, y, w, h in faces[[0]]:
+                frame = cv2.rectangle(
+                    frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
+        except:
+            pass
         cv2.imshow("drone", frame)
         key = cv2.waitKey(1)
         if key == ord('q'):
