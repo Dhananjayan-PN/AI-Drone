@@ -1,4 +1,4 @@
-from djitellopy import Tello
+from tello_module import Tello
 import cv2
 import time
 
@@ -6,6 +6,8 @@ tello = Tello()
 
 tello.connect()
 
+
+tello
 '''tello.takeoff()
 time.sleep(5)
 
