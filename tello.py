@@ -9,6 +9,7 @@ from threading import Thread
 drones = None
 client_socket = None
 
+
 class Tello:
     """Python wrapper to interact with the Ryze Tello drone using the official Tello api.
     Tello API documentation:
@@ -77,8 +78,8 @@ class Tello:
     is_flying = False
 
     def __init__(self,
-        host='192.168.10.1',
-        retry_count=3):
+                 host='192.168.10.1',
+                 retry_count=3):
 
         global drones
 
@@ -90,9 +91,11 @@ class Tello:
             drones = {}
 
             # Run tello udp receiver on background
-            thread1 = threading.Thread(target=Tello.udp_response_receiver, args=())
+            thread1 = threading.Thread(
+                target=Tello.udp_response_receiver, args=())
             # Run state reciever on background
-            thread2 = threading.Thread(target=Tello.udp_state_receiver, args=())
+            thread2 = threading.Thread(
+                target=Tello.udp_state_receiver, args=())
 
             thread1.daemon = True
             thread2.daemon = True
@@ -159,7 +162,6 @@ class Tello:
         state = state.decode('ASCII').strip()
         if state == 'ok':
             return {}
-
 
         state_obj = {}
         for field in state.split(';'):
@@ -304,7 +306,8 @@ class Tello:
         return self.get_state_field('bat')
 
     def get_udp_video_address(self) -> str:
-        return 'udp://@' + self.VS_UDP_IP + ':' + str(self.VS_UDP_PORT)  # + '?overrun_nonfatal=1&fifo_size=5000'
+        # + '?overrun_nonfatal=1&fifo_size=5000'
+        return 'udp://@' + self.VS_UDP_IP + ':' + str(self.VS_UDP_PORT)
 
     def get_video_capture(self):
         """Get the VideoCapture object from the camera drone
@@ -327,7 +330,8 @@ class Tello:
             BackgroundFrameRead
         """
         if self.background_frame_read is None:
-            self.background_frame_read = BackgroundFrameRead(self, self.get_udp_video_address()).start()
+            self.background_frame_read = BackgroundFrameRead(
+                self, self.get_udp_video_address()).start()
         return self.background_frame_read
 
     def stop_video_capture(self):
@@ -460,14 +464,16 @@ class Tello:
                 return int(response)
             else:
                 try:
-                    return float(response)  # isdigit() is False when the number is a float(barometer)
+                    # isdigit() is False when the number is a float(barometer)
+                    return float(response)
                 except ValueError:
                     return response
         else:
             return self.raise_result_error(command, response)
 
     def raise_result_error(self, command: str, response: any) -> bool:
-        raise Exception('Command ' + command + ' was unsuccessful. Message: ' + str(response))
+        raise Exception('Command ' + command +
+                        ' was unsuccessful. Message: ' + str(response))
 
     def connect(self):
         """Entry SDK mode
@@ -767,8 +773,10 @@ class Tello:
         else:
             self.last_rc_control_sent = int(time.time() * 1000)
             return self.send_command_without_return('rc %s %s %s %s' % (self.round_to_100(left_right_velocity),
-                                                                        self.round_to_100(forward_backward_velocity),
-                                                                        self.round_to_100(up_down_velocity),
+                                                                        self.round_to_100(
+                                                                            forward_backward_velocity),
+                                                                        self.round_to_100(
+                                                                            up_down_velocity),
                                                                         self.round_to_100(yaw_velocity)))
 
     def round_to_100(self, x: int):
@@ -844,7 +852,8 @@ class Tello:
             {'pitch': int, 'roll': int, 'yaw': int}
         """
         r = self.send_read_command('attitude?').replace(';', ':').split(':')
-        return dict(zip(r[::2], [int(i) for i in r[1::2]]))  # {'pitch': xxx, 'roll': xxx, 'yaw': xxx}
+        # {'pitch': xxx, 'roll': xxx, 'yaw': xxx}
+        return dict(zip(r[::2], [int(i) for i in r[1::2]]))
 
     def get_barometer(self) -> int:
         """Get barometer value (m)
