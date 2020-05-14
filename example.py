@@ -1,5 +1,7 @@
-from djitellopy import Tello
-import cv2, math, time
+from tello_module import Tello
+import cv2
+import math
+import time
 
 tello = Tello()
 tello.connect()
