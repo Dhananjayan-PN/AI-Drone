@@ -2,7 +2,7 @@ from tello_module import Tello
 import cv2
 import time
 
-tello = Tello()
+tello = Tello()  # Initializing tello SDK
 
 tello.connect()
 
