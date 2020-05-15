@@ -22,13 +22,16 @@ try:
         frame = frame_read.frame
         face_cascade = cv2.CascadeClassifier("frontalface.xml")
         faces = face_cascade.detectMultiScale(frame)
+        height, width, channels = frame.shape
+        center_x, center_y = int(width/2), int(height/2)-150
+        frame = cv2.rectangle(frame, (center_x - 100, center_y - 100),
+                              (center_x + 100, center_y + 100), (0, 0, 255), 2)
         try:
-            x, y, w, h = faces[0]
-            #print(x, y, w, h)
-            print(str(x+(w/2)), str(y+(h/2)))
-            frame = cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 1)
+            for x, y, w, h in faces:
+                frame = cv2.rectangle(
+                    frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
         except Exception as e:
-            print(e)
+            pass
         cv2.imshow("drone", frame)
         key = cv2.waitKey(1)
         if key == ord('q'):
