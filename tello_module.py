@@ -618,7 +618,7 @@ class Tello:
     def rotate_counter_clockwise(self, x: int):
         """Tello rotate x degree counter-clockwise.
         Arguments:
-            x: 1-3600
+            x: 1-360
 
         Returns:
             bool: True for successful, False for unsuccessful
@@ -812,7 +812,7 @@ class Tello:
         return self.send_read_command('speed?')
 
     def query_battery(self) -> int:
-        """Get current battery percentage via a query command
+        """Get current battery percentage via a query command.
         Using get_battery is usually faster
         Returns:
             False: Unsuccessful
